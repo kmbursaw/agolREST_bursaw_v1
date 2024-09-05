@@ -20,8 +20,9 @@
       "esri/Graphic",  
       "esri/layers/GraphicsLayer",
       "esri/geometry/Polyline",
-      "esri/geometry/Polygon"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon) {   
+      "esri/geometry/Polygon",
+      "esri/layers/FeatureLayer"
+    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer) {   
 
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurFa5WfXMQlRQPnfNYzLFFYga1fw0U3EB74KznnD3Q-j0AB9HdCmpOghHtkHppjTP_28Gd65ao6PCq3TkG0tJ3hZXDgrukv8aAoFxebfSdW8q97PlMsrfq7nQ5seQfazEIltTu-OWRzaW7f4FLTvO2sPZ-GI21IUJHlx3EgphVNeA0XX7woV69BRNK0kyac0EPDamoSzTK8mrrLhPaWW2zQiKQ4JWB0Okf4wgrn3A9wN3AT1_R7CKhNBZ"
       const map = new Map ({
@@ -31,7 +32,7 @@
       const view = new MapView({
         map: map,
         center: [-97.085569, 32.768962], // Longitude, latitude
-        zoom: 10, // Zoom level
+        zoom: 9, // Zoom level
         container: "viewDiv" // Div element
       });
 
@@ -79,9 +80,10 @@
       });
 
       const polylineSymbol = {
-        type: "simple-line",
-        color: [255, 0, 0],
-        width: 4
+        type: "simple-line", 
+        color: [255, 0, 0, 0.5], //experimenting with transparency
+        width: 4,
+        style: "short-dash-dot"
       };
 
       const polylineGraphic = new Graphic ({
@@ -90,9 +92,51 @@
       });
 
 
+
+      const polygon = {
+          type: "polygon", // autocasts as new Polygon()
+          rings: [[-97.814115, 33.211606], [-97.725068, 32.883187], [-97.411623, 33.181800], [-97.814115, 33.211606]]
+      };
+
+      // Create a symbol for rendering the graphic
+      const fillSymbol = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [227, 139, 79, 0.8],
+          outline: {
+            // autocasts as new SimpleLineSymbol()
+            color: [255, 255, 255],
+            width: 1
+          }
+      };
+
+      // Add the geometry and symbol to a new graphic
+      const polygonGraphic = new Graphic({
+        geometry: polygon,
+        symbol: fillSymbol
+      });
+
+      //adding points, polylines, and polygons to the graphics layer
       graphicsLayer.add(pointGraphic);
       graphicsLayer.add(polylineGraphic);
       graphicsLayer.add(polygonGraphic);
+
+      // Define a pop-up for usaeduLayer
+      const popupaviationfacilities = {
+        "title": "Aviation Facilities",
+        "content": "<b>ICAO ID:</b> {ARPT_ID}<br><b>Airport Name:</b> {ARPT_NAME}<br><b>City:</b> {CITY}<br><b>State:</b> {STATE_CODE}<br><b>Airport Type:</b> {SITE_TYPE_CODE}<br>"
+      }
+
+      const aviationfacilitiesLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/xOi1kZaI0eWDREZv/arcgis/rest/services/Aviation_Facilities/FeatureServer/0",
+
+        //adding the popup here
+        outFields: ["ARPT_ID", "ARPT_NAME", "CITY", "STATE_CODE", "SITE_TYPE_CODE"],
+        popupTemplate: popupaviationfacilities
+      
+      });
+
+
+      map.add(aviationfacilitiesLayer);
 
 
       let basemapGallery = new BasemapGallery({
