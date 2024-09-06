@@ -135,8 +135,22 @@
       
       });
 
+      const popupusaviation = {
+        "title": "US Aviation Facilities",
+        "content": "<b>ICAO ID:</b> {Loc_Id}<br><b>City:</b> {City}<br><b>State:</b> {State_Post}<br>"
+      }
+      
+      const usaviationLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Aviation_Facilities/FeatureServer",
+
+        //adding the popup here
+        outFields: ["Loc_Id", "City", "State_Post"],
+        popupTemplate: popupusaviation
+      });
+
 
       map.add(aviationfacilitiesLayer);
+      map.add(usaviationLayer);
 
 
       let basemapGallery = new BasemapGallery({
