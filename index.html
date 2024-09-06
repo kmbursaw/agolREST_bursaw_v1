@@ -171,8 +171,8 @@
         "symbol": {
           "type": "picture-marker",
           "url": "https://kmbursaw.github.io/agol_bursaw/flight_24dp_5F6368.png",
-          "width": "18px",
-          "height": "18px"
+          "width": "24px",
+          "height": "24px"
         }
       }
 
@@ -207,10 +207,54 @@
 
       });
 
+
+      //renderer set for airport
+      const heliportRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://kmbursaw.github.io/agol_bursaw/helicopter_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png",
+          "width": "24px",
+          "height": "24px"
+        }
+      }
+
+
+      //const to make the airport labels
+      const heliportLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.Fac_Name"
+        }
+      };
+
+      //creates airportLayer and sets url and renderer. Uses SQL to pull out only airports
+      const heliportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Aviation_Facilities/FeatureServer",
+          renderer: heliportRenderer,
+
+          definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for airport
+          labelingInfo: [heliportLabels] //adding the labels
+
+      });
+
       //adds layers to map
       map.add(aviationfacilitiesLayer);
       map.add(usaviationLayer);
       map.add(airportLayer);
+      map.add(heliportLayer);
 
       //sets basemap gallery
       let basemapGallery = new BasemapGallery({
