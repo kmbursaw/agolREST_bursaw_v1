@@ -10,6 +10,7 @@
   <script src="https://js.arcgis.com/4.25/"></script>
 
   <script>  
+    //adds widgets and functions to the map
     require([
       "esri/config", 
       "esri/Map", 
@@ -26,11 +27,13 @@
       "esri/renderers/SimpleRenderer"
     ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, PictureMarkerSymbol, SimpleRenderer) {   
 
+      //api key and basemap layer set
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurFa5WfXMQlRQPnfNYzLFFYga1fw0U3EB74KznnD3Q-j0AB9HdCmpOghHtkHppjTP_28Gd65ao6PCq3TkG0tJ3hZXDgrukv8aAoFxebfSdW8q97PlMsrfq7nQ5seQfazEIltTu-OWRzaW7f4FLTvO2sPZ-GI21IUJHlx3EgphVNeA0XX7woV69BRNK0kyac0EPDamoSzTK8mrrLhPaWW2zQiKQ4JWB0Okf4wgrn3A9wN3AT1_R7CKhNBZ"
       const map = new Map ({
         basemap: "arcgis-dark-gray" //basemap layer
       });
 
+      //sets view of map on loading
       const view = new MapView({
         map: map,
         center: [-97.085569, 32.768962], // Longitude, latitude
@@ -38,15 +41,18 @@
         container: "viewDiv" // Div element
       });
 
+      //creates and adds graphics layer
       const graphicsLayer = new GraphicsLayer();  
       map.add(graphicsLayer);
 
+      //adds point to map at specified coordinates
       const point = { //Create a point  
         type: "point",  
         longitude: -97.040456,    //long lat of DFW
         latitude: 32.916913
       };
 
+      //styles point
       const simpleMarkerSymbol = {  
         type: "simple-marker",
         style: "diamond",  
@@ -57,15 +63,19 @@
         }  
       };
 
+      //sets pupup
       const popupTemplate = {
         title: "{Name}",
         content: "{Description}"
       }
+
+      //sets popup attributes
       const attributes = {
         Name: "Dallas-Ft Worth International Airport",
         Description: "The Primary Airport Serving the Dallas-Ft Worth Metroplex and the North Texas Region"
       }
 
+      //sets graphic for point
       const pointGraphic = new Graphic({  
         geometry: point,  
         symbol: simpleMarkerSymbol,
@@ -73,7 +83,7 @@
         popupTemplate: popupTemplate
       });
 
-
+      //creates polyline at coordinates
       const polyline = new Polyline ({
         paths: [
           [-96.796875, 32.783534],
@@ -81,6 +91,7 @@
         ]
       });
 
+      //styles polyline
       const polylineSymbol = {
         type: "simple-line", 
         color: [255, 0, 0, 0.5], //experimenting with transparency
@@ -88,13 +99,14 @@
         style: "short-dash-dot"
       };
 
+      //sets polyline graphic
       const polylineGraphic = new Graphic ({
         geometry: polyline,
         symbol: polylineSymbol
       });
 
 
-
+      //sets polygon at coordinates
       const polygon = {
           type: "polygon", // autocasts as new Polygon()
           rings: [[-97.814115, 33.211606], [-97.725068, 32.883187], [-97.411623, 33.181800], [-97.814115, 33.211606]]
@@ -128,6 +140,7 @@
         "content": "<b>ICAO ID:</b> {ARPT_ID}<br><b>Airport Name:</b> {ARPT_NAME}<br><b>City:</b> {CITY}<br><b>State:</b> {STATE_CODE}<br><b>Airport Type:</b> {SITE_TYPE_CODE}<br>"
       }
 
+      //creates variable and adds url to pull data
       const aviationfacilitiesLayer = new FeatureLayer({
         url: "https://services.arcgis.com/xOi1kZaI0eWDREZv/arcgis/rest/services/Aviation_Facilities/FeatureServer/0",
 
@@ -137,11 +150,13 @@
       
       });
 
+      //sets popup attributes
       const popupusaviation = {
         "title": "US Aviation Facilities",
         "content": "<b>ICAO ID:</b> {Loc_Id}<br><b>City:</b> {City}<br><b>State:</b> {State_Post}<br>"
       }
       
+      //creates variable and adds url to pull data
       const usaviationLayer = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Aviation_Facilities/FeatureServer",
 
@@ -150,11 +165,12 @@
         popupTemplate: popupusaviation
       });
 
+      //renderer set for airport
       const airportRenderer = {
         "type": "simple",
         "symbol": {
           "type": "picture-marker",
-          "url": "https://github.com/kmbursaw/agol_bursaw/blob/main/flight_24dp_5F6368.png",
+          "url": "https://raw.github.com/kmbursaw/agol_bursaw/blob/main/flight_24dp_5F6368.png",
           "width": "18px",
           "height": "18px"
         }
@@ -181,7 +197,7 @@
         }
       };
 
-
+      //creates airportLayer and sets url and renderer. Uses SQL to pull out only airports
       const airportLayer = new FeatureLayer({
           url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Aviation_Facilities/FeatureServer",
           renderer: airportRenderer,
@@ -191,12 +207,12 @@
 
       });
 
-
+      //adds layers to map
       map.add(aviationfacilitiesLayer);
       map.add(usaviationLayer);
       map.add(airportLayer);
 
-
+      //sets basemap gallery
       let basemapGallery = new BasemapGallery({
         view: view,
         container: basemapGalleryDiv
@@ -206,6 +222,7 @@
         position: "top-right"
       });
 
+      //sets locate button variable
       const locateBtn = new Locate({
           view: view
         });
@@ -215,6 +232,7 @@
         position: "top-left"
       });
 
+      //sets search widget variable
       const searchWidget = new Search({
         view: view
       });
