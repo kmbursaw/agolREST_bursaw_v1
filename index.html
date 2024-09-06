@@ -21,8 +21,10 @@
       "esri/layers/GraphicsLayer",
       "esri/geometry/Polyline",
       "esri/geometry/Polygon",
-      "esri/layers/FeatureLayer"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer) {   
+      "esri/layers/FeatureLayer",
+      "esri/symbols/PictureMarkerSymbol",
+      "esri/renderers/SimpleRenderer"
+    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, PictureMarkerSymbol, SimpleRenderer) {   
 
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurFa5WfXMQlRQPnfNYzLFFYga1fw0U3EB74KznnD3Q-j0AB9HdCmpOghHtkHppjTP_28Gd65ao6PCq3TkG0tJ3hZXDgrukv8aAoFxebfSdW8q97PlMsrfq7nQ5seQfazEIltTu-OWRzaW7f4FLTvO2sPZ-GI21IUJHlx3EgphVNeA0XX7woV69BRNK0kyac0EPDamoSzTK8mrrLhPaWW2zQiKQ4JWB0Okf4wgrn3A9wN3AT1_R7CKhNBZ"
       const map = new Map ({
@@ -146,6 +148,21 @@
         //adding the popup here
         outFields: ["Loc_Id", "City", "State_Post"],
         popupTemplate: popupusaviation
+      });
+
+      const airportRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://github.com/kmbursaw/agol_bursaw/blob/main/flight_24dp_5F6368.png",
+          "width": "18px",
+          "height": "18px"
+        }
+      }
+
+      const airportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Aviation_Facilities/FeatureServer",
+          renderer: airportRenderer
       });
 
 
