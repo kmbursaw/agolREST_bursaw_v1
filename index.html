@@ -253,7 +253,7 @@
       });
 
       //adding the const for the feature layer
-      const newAirports = new FeatureLayer({
+      const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/New_Airports/FeatureServer",
         
         //adding the popup here
@@ -266,7 +266,7 @@
       map.add(usaviationLayer);
       map.add(airportLayer);
       map.add(heliportLayer);
-      map.add(newAirports);
+      map.add(myAirports);
 
       // Set the point layer's LayerInfo
       const pointInfos = {
