@@ -24,11 +24,10 @@
       "esri/geometry/Polygon",
       "esri/layers/FeatureLayer",
       "esri/symbols/PictureMarkerSymbol",
-      "esri/renderers/SimpleRenderer"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, PictureMarkerSymbol, SimpleRenderer) {   
+      "esri/renderers/SimpleRenderer",
+      "esri/widgets/Editor"
+    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, PictureMarkerSymbol, SimpleRenderer, Editor) {   
 
-      //test
-      console.log("test")
 
       //api key and basemap layer set
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurFa5WfXMQlRQPnfNYzLFFYga1fw0U3EB74KznnD3Q-j0AB9HdCmpOghHtkHppjTP_28Gd65ao6PCq3TkG0tJ3hZXDgrukv8aAoFxebfSdW8q97PlMsrfq7nQ5seQfazEIltTu-OWRzaW7f4FLTvO2sPZ-GI21IUJHlx3EgphVNeA0XX7woV69BRNK0kyac0EPDamoSzTK8mrrLhPaWW2zQiKQ4JWB0Okf4wgrn3A9wN3AT1_R7CKhNBZ"
@@ -253,11 +252,35 @@
 
       });
 
+      //adding the const for the feature layer
+      const newAirports = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/New_Airports/FeatureServer",
+        
+        //adding the popup here
+        outFields: ["AirportCode"],
+
+      });
+
       //adds layers to map
       map.add(aviationfacilitiesLayer);
       map.add(usaviationLayer);
       map.add(airportLayer);
       map.add(heliportLayer);
+      map.add(newAirports);
+
+      // Set the point layer's LayerInfo
+      const pointInfos = {
+        layer: myAirports
+      }
+
+      // Begin Editor constructor
+      const editor = new Editor({
+        view: view,
+        layerInfos: [pointInfos]
+      }); // End Editor constructor
+
+      // Add the widget to the view
+      view.ui.add(editor, "top-right");
 
       //sets basemap gallery
       let basemapGallery = new BasemapGallery({
