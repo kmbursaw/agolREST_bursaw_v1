@@ -148,7 +148,8 @@
 
         //adding the popup here
         outFields: ["ARPT_ID", "ARPT_NAME", "CITY", "STATE_CODE", "SITE_TYPE_CODE"],
-        popupTemplate: popupaviationfacilities
+        popupTemplate: popupaviationfacilities,
+        title: "FAA Aviation Facilities Database"
       
       });
 
@@ -164,7 +165,8 @@
 
         //adding the popup here
         outFields: ["Loc_Id", "City", "State_Post"],
-        popupTemplate: popupusaviation
+        popupTemplate: popupusaviation,
+        title: "All US Aviation Facilities"
       });
 
       //renderer set for airport
@@ -205,7 +207,8 @@
           renderer: airportRenderer,
 
           definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airport
-          labelingInfo: [airportLabels] //adding the labels
+          labelingInfo: [airportLabels], //adding the labels
+          title: "Airports"
 
       });
 
@@ -248,7 +251,8 @@
           renderer: heliportRenderer,
 
           definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for airport
-          labelingInfo: [heliportLabels] //adding the labels
+          labelingInfo: [heliportLabels], //adding the labels
+          title: "Heliports"
 
       });
 
@@ -258,6 +262,7 @@
         
         //adding the popup here
         outFields: ["AirportCode"],
+        title: "My Airports"
 
       });
 
