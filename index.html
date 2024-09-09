@@ -25,8 +25,9 @@
       "esri/layers/FeatureLayer",
       "esri/symbols/PictureMarkerSymbol",
       "esri/renderers/SimpleRenderer",
-      "esri/widgets/Editor"
-    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, PictureMarkerSymbol, SimpleRenderer, Editor) {   
+      "esri/widgets/Editor",
+      "esri/widgets/Legend"
+    ], function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, PictureMarkerSymbol, SimpleRenderer, Editor, Legend) {   
 
 
       //api key and basemap layer set
@@ -135,9 +136,9 @@
       });
 
       //adding points, polylines, and polygons to the graphics layer
-      //graphicsLayer.add(pointGraphic);
-      //graphicsLayer.add(polylineGraphic);
-      //graphicsLayer.add(polygonGraphic);
+      //graphicsLayer.add(pointGraphic); //commented out for lab 3
+      //graphicsLayer.add(polylineGraphic); //commented out for lab 3
+      //graphicsLayer.add(polygonGraphic); //commented out for lab 3
       
 
       // Define a pop-up for usaeduLayer
@@ -249,17 +250,60 @@
         }
       };
 
-      //creates airportLayer and sets url and renderer. Uses SQL to pull out only airports
+      //creates heliportLayer and sets url and renderer. Uses SQL to pull out only heliports
       const heliportLayer = new FeatureLayer({
           url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Aviation_Facilities/FeatureServer",
           renderer: heliportRenderer,
 
-          definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for airport
+          definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for heliport
           labelingInfo: [heliportLabels], //adding the labels
           title: "Heliports"
 
       });
 
+            //renderer set for airport
+            const myAirportsRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://kmbursaw.github.io/agolREST_bursaw_v1/flight_takeoff_24dp_5F6368.png",
+          "width": "24px",
+          "height": "24px"
+        }
+      }
+
+
+      //const to make the airport labels
+      const myAirportsLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.AirportCode"
+        }
+      };
+
+      //creates myAirportsLayer and sets url and renderer.
+      const myAirportsLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/New_Airports/FeatureServer",
+          renderer: myAirportsRenderer,
+
+          labelingInfo: [myAirportsLabels], //adding the labels
+          title: "My Airports"
+
+      });
+
+      
       //adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/New_Airports/FeatureServer",
@@ -269,13 +313,14 @@
         title: "My Airports"
 
       });
+      
 
       //adds layers to map
-      map.add(aviationfacilitiesLayer);
-      map.add(usaviationLayer);
+      //map.add(aviationfacilitiesLayer); //commented out for lab 3
+      //map.add(usaviationLayer); //commented out for lab 3
       map.add(airportLayer);
       map.add(heliportLayer);
-      map.add(myAirports);
+      map.add(myAirportsLayer); //newest layer for lab3
 
       // Set the point layer's LayerInfo
       const pointInfos = {
@@ -291,7 +336,8 @@
       // Add the widget to the view
       view.ui.add(editor, "top-right");
 
-      /*
+      /* //commented out for lab 3
+      
       //sets basemap gallery
       let basemapGallery = new BasemapGallery({
         view: view,
@@ -324,6 +370,12 @@
         position: "top-left",
         index: 2
       });
+
+      let legend = new Legend({
+        view: view
+      });
+
+      view.ui.add(legend, "bottom-right");
 
     });  
   </script>
