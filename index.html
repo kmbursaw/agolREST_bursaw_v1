@@ -47,6 +47,7 @@
       const graphicsLayer = new GraphicsLayer();  
       map.add(graphicsLayer);
 
+      
       //adds point to map at specified coordinates
       const point = { //Create a point  
         type: "point",  
@@ -64,6 +65,7 @@
           width: 1
         }  
       };
+      
 
       //sets pupup
       const popupTemplate = {
@@ -85,6 +87,7 @@
         popupTemplate: popupTemplate
       });
 
+      
       //creates polyline at coordinates
       const polyline = new Polyline ({
         paths: [
@@ -132,9 +135,10 @@
       });
 
       //adding points, polylines, and polygons to the graphics layer
-      graphicsLayer.add(pointGraphic);
-      graphicsLayer.add(polylineGraphic);
-      graphicsLayer.add(polygonGraphic);
+      //graphicsLayer.add(pointGraphic);
+      //graphicsLayer.add(polylineGraphic);
+      //graphicsLayer.add(polygonGraphic);
+      
 
       // Define a pop-up for usaeduLayer
       const popupaviationfacilities = {
@@ -287,6 +291,7 @@
       // Add the widget to the view
       view.ui.add(editor, "top-right");
 
+      /*
       //sets basemap gallery
       let basemapGallery = new BasemapGallery({
         view: view,
@@ -296,6 +301,7 @@
       view.ui.add(basemapGallery, {
         position: "top-right"
       });
+      */
 
       //sets locate button variable
       const locateBtn = new Locate({
